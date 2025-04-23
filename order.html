@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place an Order - Jumia Help Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff9900;
+            --secondary-color: #f7f7f7;
+            --accent-color: #ff6600;
+            --text-color: #333;
+            --light-text: #666;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --footer-bg: #333;
+            --footer-text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcce02;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .help-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #fff8f0, white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .help-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .help-header p {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .step-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .step-card p {
+            color: var(--light-text);
+            margin-bottom: 1rem;
+        }
+
+        .step-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-top: 1rem;
+            border-radius: var(--border-radius);
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border: 1px solid #eee;
+        }
+
+        .support-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .support-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .support-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .support-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            background-color: var(--secondary-color);
+            transition: all 0.3s;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        .support-option:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .support-option:hover i {
+            color: white;
+        }
+
+        .support-option i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: color 0.3s;
+        }
+
+        .faq-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .faq-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            color: var(--light-text);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding-top: 0.5rem;
+        }
+
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--footer-text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icons a {
+            color: var(--footer-text);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .help-header h1 {
+                font-size: 2rem;
+            }
+            
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+
+            .support-option {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <img src="https://www.jumia.com.ug/assets_he/images/jumia-logo.svg" alt="Jumia Logo" class="logo">
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Help Center</a>
+            <a href="#">Track Order</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="help-header">
+            <h1>How to Place an Order on Jumia</h1>
+            <p>Follow these simple steps to shop on Jumia Uganda and get your items delivered to your doorstep</p>
+        </div>
+
+        <div class="steps-container">
+            <div class="step-card fade-in">
+                <div class="step-number">1</div>
+                <h3>Find Your Product</h3>
+                <p>Browse through our categories or use the search bar to find the product you want to purchase. You can filter by price, brand, and customer ratings.</p>
+                <img src="https://www.jumia.com.ug/catalog/productsearch?q=" alt="Search Products" class="step-image">
+            </div>
+
+            <div class="step-card fade-in">
+                <div class="step-number">2</div>
+                <h3>Add to Cart</h3>
+                <p>Click on "Add to Cart" button when you've found the product you want to purchase. You can continue shopping or proceed to checkout.</p>
+                <img src="https://www.jumia.com.ug/images/cart-icon.png" alt="Add to Cart" class="step-image">
+            </div>
+
+            <div class="step-card fade-in">
+                <div class="step-number">3</div>
+                <h3>Proceed to Checkout</h3>
+                <p>Review your cart (quantity, color, size) and click on "Proceed to Checkout" when you're ready to complete your order.</p>
+                <img src="https://www.jumia.com.ug/images/checkout-process.png" alt="Checkout" class="step-image">
+            </div>
+
+            <div class="step-card fade-in">
+                <div class="step-number">4</div>
+                <h3>Enter Delivery Details</h3>
+                <p>Provide your delivery address and contact information where you want to receive your order. You can save multiple addresses.</p>
+                <img src="https://www.jumia.com.ug/images/delivery-options.png" alt="Delivery Details" class="step-image">
+            </div>
+
+            <div class="step-card fade-in">
+                <div class="step-number">5</div>
+                <h3>Select Payment Method</h3>
+                <p>Choose your preferred payment option: Mobile Money, Credit Card, JumiaPay, or Cash on Delivery.</p>
+                <img src="https://www.jumia.com.ug/images/payment-methods.png" alt="Payment Methods" class="step-image">
+            </div>
+
+            <div class="step-card fade-in">
+                <div class="step-number">6</div>
+                <h3>Place Your Order</h3>
+                <p>Review your order details and click "Place Order" to complete your purchase. You'll receive an order confirmation email/SMS.</p>
+                <img src="https://www.jumia.com.ug/images/order-confirmation.png" alt="Place Order" class="step-image">
+            </div>
+        </div>
+
+        <div class="support-section fade-in">
+            <h2>Need Help Placing Your Order?</h2>
+            <p>Our customer service team is available 24/7 to assist you</p>
+            
+            <div class="support-options">
+                <div class="support-option" onclick="window.location.href='tel:+256740327211'">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Call: +256 740 327211</span>
+                </div>
+                <div class="support-option" onclick="window.location.href='https://wa.me/25677687754'">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp: +256 77687754</span>
+                </div>
+                <div class="support-option" onclick="openLiveChat()">
+                    <i class="fas fa-comments"></i>
+                    <span>Live Chat</span>
+                </div>
+                <div class="support-option" onclick="window.location.href='flexi@gmail.com'">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email Us</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section fade-in">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How do I track my order?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    You can track your order by logging into your Jumia account and going to "My Orders". You'll receive SMS and email updates with your delivery status. Alternatively, you can contact our customer service for assistance.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What payment methods do you accept?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    We accept Mobile Money (MTN, Airtel), Visa/Mastercard, JumiaPay, and Cash on Delivery for most items. Some items may not be eligible for Cash on Delivery.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How long does delivery take?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Delivery times vary by location: Kampala (1-3 days), Other major towns (3-5 days), Upcountry (5-7 days). Some items may take longer depending on availability.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Can I return or exchange an item?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes, we offer a 7-day free return policy for most items. The item must be unused, in its original packaging with all tags attached. Some items like perishables and personal care products may not be returnable.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Terms and Conditions</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Sell on Flexifas</a>
+            <a href="#">Delivery Information</a>
+        </div>
+        
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        
+        <p class="copyright">© 2024 Flexifas Uganda. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Simple animation for step cards
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements with fade-in class
+            const animateElements = document.querySelectorAll('.fade-in');
+            
+            animateElements.forEach((element, index) => {
+                element.style.opacity = '0';
+                
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // FAQ toggle functionality
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            faqItem.classList.toggle('active');
+            
+            // Close other FAQs when opening one
+            if (faqItem.classList.contains('active')) {
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+        }
+
+        // Simulate live chat opening
+        function openLiveChat() {
+            alert("Our live chat will open in a new window. Our agents are available 24/7 to assist you.");
+            // In a real implementation, this would open your chat widget
+            // window.open('https://chat.jumia.ug', '_blank');
+        }
+
+        // Make support options clickable
+        document.querySelectorAll('.support-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Ripple effect
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FLEXI FUSHION ACCESSORIES - Payment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary-color: #34c759;
+      --secondary-color: #2a8b4a;
+      --transition: all 0.3s ease;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color:#f87f0d;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .help-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .help-header h1 {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .help-header p {
+      font-size: 1.1rem;
+      color: #666;
+    }
+
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .payment-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.05);
+      animation: fadeInUp 0.5s ease;
+      animation-fill-mode: both;
+    }
+
+    .payment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .payment-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--primary-color);
+      transform: scaleX(0);
+      transition: var(--transition);
+    }
+
+    .payment-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .payment-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+
+    .payment-card:hover .payment-icon {
+      transform: scale(1.1);
+    }
+
+    .payment-card h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #444;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 450px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+      text-align: center;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content button {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .modal-content input:focus,
+    .modal-content select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(52, 199, 89, 0.2);
+    }
+
+    .modal-content button {
+      background: var(--primary-color);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      padding: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .modal-content button:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .close {
+      position: absolute;
+      top: 15px; right: 20px;
+      font-size: 1.5rem;
+      color: #888;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .close:hover {
+      color: #333;
+      transform: rotate(90deg);
+    }
+
+    .mobile-fields {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .mobile-fields.active {
+      display: block;
+    }
+
+    /* Background styling */
+    .bg-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .bg-overlay.active {
+      opacity: 0.15;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Payment method specific backgrounds */
+    #bg-card {
+      background-image: url('https://images.unsplash.com/photo-1613243555978-636c48dc653c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    }
+
+    #bg-mobile {
+      background-image: url('https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    }
+
+    #bg-bank {
+      background-image: url('https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    }
+
+    #bg-cash {
+      background-image: url('https://images.unsplash.com/photo-1604176354204-9268737828e4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    }
+
+    #bg-paypal {
+      background-image: url('https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    }
+
+    #bg-flexi {
+      background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .payment-methods {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      
+      .modal-content {
+        width: 90%;
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .help-header h1 {
+        font-size: 2rem;
+      }
+      
+      .payment-methods {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background overlays for each payment method -->
+<div class="bg-overlay" id="bg-card"></div>
+<div class="bg-overlay" id="bg-mobile"></div>
+<div class="bg-overlay" id="bg-bank"></div>
+<div class="bg-overlay" id="bg-cash"></div>
+<div class="bg-overlay" id="bg-paypal"></div>
+<div class="bg-overlay" id="bg-flexi"></div>
+
+<div class="container">
+  <div class="help-header">
+    <h1>Payment Options</h1>
+    <p>Select your preferred payment method</p>
+  </div>
+
+  <div class="payment-methods">
+    <!-- Add animation delays for staggered entrance -->
+    <div class="payment-card" data-method="Credit/Debit Card" style="animation-delay: 0.1s">
+      <div class="payment-icon"><i class="far fa-credit-card"></i></div>
+      <h3>Credit/Debit Card</h3>
+    </div>
+    <div class="payment-card" data-method="Mobile Money" style="animation-delay: 0.2s">
+      <div class="payment-icon"><i class="fas fa-mobile-alt"></i></div>
+      <h3>Mobile Money</h3>
+    </div>
+    <div class="payment-card" data-method="Bank Transfer" style="animation-delay: 0.3s">
+      <div class="payment-icon"><i class="fas fa-university"></i></div>
+      <h3>Bank Transfer</h3>
+    </div>
+    <div class="payment-card" data-method="Cash on Delivery" style="animation-delay: 0.4s">
+      <div class="payment-icon"><i class="fas fa-money-bill-wave"></i></div>
+      <h3>Cash on Delivery</h3>
+    </div>
+    <div class="payment-card" data-method="PayPal" style="animation-delay: 0.5s">
+      <div class="payment-icon"><i class="fab fa-paypal"></i></div>
+      <h3>PayPal</h3>
+    </div>
+    <div class="payment-card" data-method="Flexifas Pay" style="animation-delay: 0.6s">
+      <div class="payment-icon"><i class="fas fa-gift"></i></div>
+      <h3>Flexifas Pay</h3>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="paymentModal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <h2 id="modalTitle">Payment</h2>
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" placeholder="you@example.com" required>
+
+    <div id="mobileMoneyFields" class="mobile-fields">
+      <label for="network">Select Network</label>
+      <select id="network">
+        <option value="">-- Choose Network --</option>
+        <option value="Airtel">Airtel Money</option>
+        <option value="MTN">MTN Mobile Money</option>
+        <option value="Africell">Africell Money</option>
+      </select>
+
+      <label for="phone">Mobile Number</label>
+      <input type="tel" id="phone" placeholder="07XXXXXXXX" required>
+
+      <label for="pin">Enter Mobile Money PIN</label>
+      <input type="password" id="pin" placeholder="****" maxlength="12">
+    </div>
+
+    <label for="amount">Amount</label>
+    <input type="text" id="amount" placeholder="$50.00" >
+
+    <button id="confirmPayment">
+      <i class="fas fa-lock"></i> Confirm Payment
+    </button>
+  </div>
+</div>
+
+<script>
+  // DOM Elements
+  const cards = document.querySelectorAll('.payment-card');
+  const modal = document.getElementById('paymentModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const closeModal = document.getElementById('closeModal');
+  const confirmBtn = document.getElementById('confirmPayment');
+  const mobileFields = document.getElementById('mobileMoneyFields');
+  const backgrounds = {
+    "Credit/Debit Card": document.getElementById('bg-card'),
+    "Mobile Money": document.getElementById('bg-mobile'),
+    "Bank Transfer": document.getElementById('bg-bank'),
+    "Cash on Delivery": document.getElementById('bg-cash'),
+    "PayPal": document.getElementById('bg-paypal'),
+    "Flexifas Pay": document.getElementById('bg-flexi')
+  };
+
+  let selectedMethod = '';
+
+  // Hide all background images
+  function hideAllBackgrounds() {
+    Object.values(backgrounds).forEach(bg => bg.classList.remove('active'));
+  }
+
+  // Handle payment card clicks
+  cards.forEach((card, index) => {
+    card.addEventListener('click', () => {
+      selectedMethod = card.getAttribute('data-method');
+      modalTitle.textContent = `Pay with ${selectedMethod}`;
+      
+      // Show modal with animation
+      modal.classList.add('active');
+      
+      // Show appropriate background
+      hideAllBackgrounds();
+      if (backgrounds[selectedMethod]) {
+        backgrounds[selectedMethod].classList.add('active');
+      }
+
+      // Show/hide mobile money fields
+      if (selectedMethod === "Mobile Money") {
+        mobileFields.classList.add('active');
+      } else {
+        mobileFields.classList.remove('active');
+      }
+      
+      // Add slight delay for animation
+      setTimeout(() => {
+        document.getElementById('email').focus();
+      }, 300);
+    });
+  });
+
+  // Close modal
+  closeModal.addEventListener('click', () => {
+    modal.classList.remove('active');
+    hideAllBackgrounds();
+  });
+
+  // Close modal when clicking outside
+  window.addEventListener('click', e => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      hideAllBackgrounds();
+    }
+  });
+
+  // Handle payment confirmation
+  confirmBtn.addEventListener('click', () => {
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const pin = document.getElementById('pin').value.trim();
+    const network = document.getElementById('network').value;
+
+    // Validate inputs
+    if (!email) {
+      alert('Please enter your email address.');
+      return;
+    }
+
+    if (selectedMethod === "Mobile Money") {
+      if (!network) {
+        alert('Please select your mobile money network.');
+        return;
+      }
+      if (!phone || phone.length < 10) {
+        alert('Please enter a valid mobile number.');
+        return;
+      }
+      if (!pin || pin.length < 4) {
+        alert('Please enter your mobile money PIN.');
+        return;
+      }
+      
+      // Simulate successful payment
+      simulatePaymentSuccess(`Payment of $50.00 via ${network} Mobile Money`, email, phone);
+    } else {
+      // Simulate successful payment for other methods
+      simulatePaymentSuccess(`Payment of $50.00 via ${selectedMethod}`, email);
+    }
+  });
+
+  // Simulate payment processing
+  function simulatePaymentSuccess(message, email, phone = '') {
+    // Show loading state
+    confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    confirmBtn.disabled = true;
+    
+    // Simulate API call delay
+    setTimeout(() => {
+      // Show success message
+      alert(`${message}\nConfirmation sent to: ${email}${phone ? ' and ' + phone : ''}`);
+      
+      // Reset form
+      document.getElementById('email').value = '';
+      document.getElementById('phone').value = '';
+      document.getElementById('pin').value = '';
+      document.getElementById('network').value = '';
+      
+      // Reset button
+      confirmBtn.innerHTML = '<i class="fas fa-lock"></i> Confirm Payment';
+      confirmBtn.disabled = false;
+      
+      // Close modal
+      modal.classList.remove('active');
+      hideAllBackgrounds();
+    }, 2000);
+  }
+
+  // Add animation delays to cards
+  cards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.1}s`;
+  });
+</script>
+
+</body>
+</html>
