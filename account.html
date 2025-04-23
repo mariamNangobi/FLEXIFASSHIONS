@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | Premium Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #f87f0d;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --dark: #212529;
+            --light:#f87f0d;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #ef233c;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f0b209;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Layout */
+        .account-app {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: 80px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .account-header {
+            grid-column: 1 / -1;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-nav a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .header-nav a:hover {
+            color: var(--primary);
+        }
+
+        .header-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .cart-badge {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        /* Sidebar */
+        .account-sidebar {
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .user-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .avatar {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary-light);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .avatar-edit:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-email {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .nav-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-item i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .account-stats {
+            margin-top: auto;
+            background: var(--primary-light);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .account-content {
+            padding: 2rem;
+            background: #f87f0d;;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-light);
+        }
+
+        /* Account Card */
+        .account-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Verification Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .verification-modal {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .verification-modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .captcha-container {
+            background: var(--primary-light);
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .captcha-text {
+            font-family: 'Courier New', monospace;
+            font-size: 1.75rem;
+            letter-spacing: 5px;
+            color: var(--dark);
+            background: white;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .captcha-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        /* Recent Orders */
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            text-align: left;
+            padding: 1rem;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .orders-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-shipped {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .account-app {
+                grid-template-columns: 240px 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .account-app {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+            }
+
+            .account-sidebar {
+                position: static;
+                height: auto;
+                display: none;
+            }
+
+            .account-sidebar.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .account-header {
+                padding: 0 1rem;
+            }
+
+            .account-content {
+                padding: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .form-actions, .modal-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-nav {
+                display: none;
+            }
+
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .account-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 1001;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            background: var(--success);
+        }
+
+        .toast-error {
+            background: var(--danger);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast-close {
+            margin-left: 1rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="account-app">
+        <!-- Header -->
+        <header class="account-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <span class="logo-text">FlexifasCollections</span>
+            </div>
+
+            <nav class="header-nav">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="cart.html"><i class="fas fa-store"></i> Shop</a>
+                <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
+                <a href="cart.html" class="cart-badge">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <a href="account.html" class="active"><i class="fas fa-user"></i> Account</a>
+            </nav>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="account-sidebar" id="accountSidebar">
+            <div class="user-profile">
+                <div class="avatar">
+                    <img src="IMG_20241001_165027_342.jpg" alt="User Avatar">
+                    <button class="avatar-edit" id="avatarEditBtn">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                <h3 class="user-name">Flexifas</h3>
+                <p class="user-email">flexifas@gmail.com</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="account.html" class="nav-item active">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="order.html" class="nav-item">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>My Orders</span>
+                </a>
+                <a href="address.html" class="nav-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Addresses</span>
+                </a>
+                <a href="payment.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payment Methods</span>
+                </a>
+                <a href="security.html" class="nav-item">
+                    <i class="fas fa-lock"></i>
+                    <span>Security</span>
+                </a>
+                <a href="notifications.html" class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <a href="logout.html" class="nav-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+
+            <div class="account-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Orders</span>
+                    <span class="stat-value">12</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Wishlist</span>
+                    <span class="stat-value">5</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Member Since</span>
+                    <span class="stat-value">2021</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="account-content">
+            <div class="content-header">
+                <div>
+                    <h1 class="page-title">Account Settings</h1>
+                    <p class="page-subtitle">Manage your profile information and preferences</p>
+                </div>
+                <button class="btn btn-primary" id="saveChangesBtn">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+
+            <div class="account-card">
+                <div class="card-header">
+                    <h2 class="card-title">Personal Information</h2>
+                </div>
+                <form id="accountForm" class="form-grid">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" id="firstName" class="form-control" value="mariam">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" id="lastName" class="form-control" value="peppa">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" class="form-control" value="flexifas@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control" value="+256 700607709">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthdate" class="form-label">Date of Birth</label>
+                        <input type="date" id="birthdate" class="form-control" value="1990-05-15">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select id="gender" class="form-control">
+                            <option value="female" selected>Female</option>
+                            <option value="male">Male</option>
+                            <option value="other">Other</option>
+                            <option value="prefer-not">Prefer not to say</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="bio" class="form-label">About Me</label>
+                        <textarea id="bio" class="form-control">Fashion enthusiast and tech lover. Always looking for the latest trends!</textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="account-card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Orders</h2>
+                    <a href="orders.html" class="btn btn-outline">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#PS-2023-1562</td>
+                                <td>Jun 15, 2024</td>
+                                <td>3</td>
+                                <td>50,000shs</td>
+                                <td><span class="order-status status-completed">Completed</span></td>
+                                <td><a href="#" class="btn btn-outline">View</a></td>
+                            </tr>
+                            <tr>
+                                <td>#PS-2023-1489</td>
+                                <td>Jun 8, 2024</td>
+                                <td>1</td>
+                                <td>35000shs</td>
+                                <td><span class="order-status status-shipped">Shipped</span></td>
+                                <td><a href="#" class="btn btn-outline">Track</a></td>
+                            </tr>
+                            <tr>
+                                <td>#PS-2023-1423</td>
+                                <td>May 28, 2024</td>
+                                <td>2</td>
+                                <td>350,000shs</td>
+                                <td><span class="order-status status-pending">Processing</span></td>
+                                <td><a href="#" class="btn btn-outline">Details</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Verification Modal -->
+    <div class="modal-overlay" id="verificationModal">
+        <div class="verification-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Security Verification</h3>
+                <p>Please verify you're human</p>
+            </div>
+            <div class="modal-body">
+                <div class="captcha-container">
+                    <p>Type the characters you see below:</p>
+                    <div class="captcha-text" id="captchaText"></div>
+                    <input type="text" class="captcha-input" id="captchaInput" placeholder="Enter the text above">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" id="refreshCaptcha">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-primary" id="verifyCaptcha">
+                        <i class="fas fa-check"></i> Verify
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="toast-message">Changes saved successfully!</div>
+        <div class="toast-close">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const accountSidebar = document.getElementById('accountSidebar');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                accountSidebar.classList.toggle('active');
+                this.innerHTML = accountSidebar.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+
+            // Form handling
+            const accountForm = document.getElementById('accountForm');
+            const saveChangesBtn = document.getElementById('saveChangesBtn');
+            const verificationModal = document.getElementById('verificationModal');
+            const toast = document.getElementById('toast');
+            
+            // Track form changes
+            let formChanged = false;
+            const formInputs = accountForm.querySelectorAll('input, textarea, select');
+            
+            formInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    formChanged = true;
+                    saveChangesBtn.style.display = 'flex';
+                });
+            });
+
+            // Save changes button
+            saveChangesBtn.addEventListener('click', function() {
+                if (formChanged) {
+                    showVerificationModal();
+                }
+            });
+
+            // CAPTCHA functionality
+            const captchaText = document.getElementById('captchaText');
+            const captchaInput = document.getElementById('captchaInput');
+            const refreshCaptchaBtn = document.getElementById('refreshCaptcha');
+            const verifyCaptchaBtn = document.getElementById('verifyCaptcha');
+            
+            function generateCaptcha() {
+                const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let captcha = '';
+                for (let i = 0; i < 6; i++) {
+                    captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return captcha;
+            }
+            
+            let currentCaptcha = generateCaptcha();
+            captchaText.textContent = currentCaptcha;
+            
+            refreshCaptchaBtn.addEventListener('click', function() {
+                currentCaptcha = generateCaptcha();
+                captchaText.textContent = currentCaptcha;
+                captchaInput.value = '';
+            });
+            
+            verifyCaptchaBtn.addEventListener('click', function() {
+                const userInput = captchaInput.value.trim();
+                
+                if (userInput === '') {
+                    showToast('Please enter the CAPTCHA text', 'error');
+                    return;
+                }
+                
+                if (userInput === currentCaptcha) {
+                    hideVerificationModal();
+                    showToast('Your changes have been saved successfully!', 'success');
+                    
+                    // Reset form state
+                    formChanged = false;
+                    saveChangesBtn.style.display = 'none';
+                    
+                    // In a real app, you would submit the form here
+                    // accountForm.submit();
+                } else {
+                    showToast('Incorrect CAPTCHA. Please try again.', 'error');
+                    currentCaptcha = generateCaptcha();
+                    captchaText.textContent = currentCaptcha;
+                    captchaInput.value = '';
+                }
+            });
+
+            // Modal functions
+            function showVerificationModal() {
+                verificationModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function hideVerificationModal() {
+                verificationModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Close modal when clicking outside
+            verificationModal.addEventListener('click', function(e) {
+                if (e.target === verificationModal) {
+                    hideVerificationModal();
+                }
+            });
+
+            // Toast notification
+            function showToast(message, type = 'success') {
+                const toastIcon = toast.querySelector('.toast-icon i');
+                const toastMessage = toast.querySelector('.toast-message');
+                
+                // Set toast content
+                toastMessage.textContent = message;
+                
+                // Set toast type
+                toast.className = 'toast';
+                toast.classList.add(`toast-${type}`);
+                
+                // Show toast
+                toast.classList.add('show');
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            }
+            
+            // Close toast
+            toast.querySelector('.toast-close').addEventListener('click', function() {
+                toast.classList.remove('show');
+            });
+
+            // Avatar edit button
+            const avatarEditBtn = document.getElementById('avatarEditBtn');
+            avatarEditBtn.addEventListener('click', function() {
+                // In a real app, this would open a file upload dialog
+                showToast('Avatar upload functionality would go here', 'success');
+            });
+        });
+    </script>
+</body>
+</html>

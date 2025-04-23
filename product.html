@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      :root {
+            --primary-color: #34c759;
+            --secondary-color: #f7f7f7;
+            --accent-color: #8bc34a;
+            --text-color: #333;
+            --light-text: #666;
+            --border-radius: 8px;
+            --box-shadow:  #66cc99;
+            --footer-bg: #2e865f;
+            --footer-text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color:#f87f0d;;
+            color: var(--text-color);
+        }
+
+        .cart-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .cart-header {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .cart-header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .cart-header p {
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .start-shopping-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+        }
+
+        .start-shopping-btn:hover {
+            background-color: #e68a00;
+        }
+
+        .top-selling {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title h2 {
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .see-all {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .see-all:hover {
+            color: #e68a00;
+            text-decoration: underline;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            font-size: 0.9rem;
+            z-index: 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            background-color: #f9f9f9;
+            padding: 1rem;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 2.8rem;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-price {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            color: #ffc107;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.6rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        button {
+    background: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+button:hover {
+    background: #cc5200;
+}
+
+/* Reviews */
+.reviews {
+    margin-top: 40px;
+    padding: 20px;
+    background: #f9f9f9;
+}
+textarea, input, select {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 5px;
+}
+
+        .add-to-cart:hover {
+            background-color: #e68a00;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cart-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            
+            .product-image {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>EXPLORE OUR PRODUCTS!</h1>
+            <p>Browse our categories and discover our best deals!</p>
+           <a href="payment.html"><button class="start-shopping-btn">order</button></a>
+        </div>
+        
+        <div class="top-selling">
+            <div class="section-title">
+                <h2>Top selling items</h2>
+                <a href="#" class="see-all">See All</a>
+            </div>
+            
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="discount-badge">-30%</div>
+                    <img src="belt.4.jpg" alt="SPJ 4 Litres, Hot Air Fryer" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Original Belts</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 20,000</span>
+                            <span class="original-price">UGX 28,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            (62)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="discount-badge">-11%</div>
+                    <img src="gangle.1.jpg" alt="Uganda Waragi Lemon" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Ear Rings and Bangles</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 10000</span>
+                            <span class="original-price">UGX 15000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <i class="far fa-star"></i>
+                            (48)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="discount-badge">-33%</div>
+                    <img src="cap.3.jpg" alt="Pixel 120 Liters Fridge" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Caps</h3>
+                        <div class="product-price">
+                            <span class="current-price">Ugx.20,000</span>
+                            <span class="original-price">Ugx.30,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            (87)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="discount-badge">-57%</div>
+                    <img src="men.suit.jpg" alt="Apple iPad 3" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Hand watches</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 25,000</span>
+                            <span class="original-price">UGX 30,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            (35)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="discount-badge">-47%</div>
+                    <img src="anklet.5.jpg" alt="FOVER POWER KEY" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Anklets</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 10,000</span>
+                            <span class="original-price">UGX 15,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            (62)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="discount-badge">-52%</div>
+                    <img src="bracelet.3.jpg" alt="Vision Plus TV" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Bracelets</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 50,000</span>
+                            <span class="original-price">UGX 60,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            (124)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                 <!-- Product 4 -->
+                 <div class="product-card">
+                    <div class="discount-badge">-57%</div>
+                    <img src="perfume.1.jpg" alt="Apple iPad 3" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Perfumes</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 25,000</span>
+                            <span class="original-price">UGX 30,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            (35)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="discount-badge">-47%</div>
+                    <img src="glasses.2.jpg" alt="FOVER POWER KEY" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Glasses</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 10,000</span>
+                            <span class="original-price">UGX 15,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            (62)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="discount-badge">-52%</div>
+                    <img src="aerring.16.jpg" alt="Vision Plus TV" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Ear rings</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 10,000</span>
+                            <span class="original-price">UGX 15,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            (124)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    
+                </div>
+                <div class="product-card">
+                    <div class="discount-badge">-57%</div>
+                    <img src="belt.3.jpg" alt="Apple iPad 3" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Belt</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 25,000</span>
+                            <span class="original-price">UGX 30,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            (35)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="discount-badge">-47%</div>
+                    <img src="bangles.2.jpg" alt="FOVER POWER KEY" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Anklets</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 10,000</span>
+                            <span class="original-price">UGX 15,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            (62)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="discount-badge">-52%</div>
+                    <img src="pexels-kinkate-208052.jpg" alt="Vision Plus TV" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">Makeup</h3>
+                        <div class="product-price">
+                            <span class="current-price">UGX 50,000</span>
+                            <span class="original-price">UGX 60,000</span>
+                        </div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            (124)
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+            </div>
+        </div>
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="discount-badge">-30%</div>
+                <img src="belt.3.jpg" alt="SPJ 4 Litres, Hot Air Fryer" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Original Belts</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 20,000</span>
+                        <span class="original-price">UGX 28,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (62)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="discount-badge">-11%</div>
+                <img src="aerring.16.jpg" alt="Uganda Waragi Lemon" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Ear Rings and Bangles</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 10000</span>
+                        <span class="original-price">UGX 15000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        (48)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="discount-badge">-33%</div>
+                <img src="cape.2.jpg" alt="Pixel 120 Liters Fridge" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Caps</h3>
+                    <div class="product-price">
+                        <span class="current-price">Ugx.20,000</span>
+                        <span class="original-price">Ugx.30,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        (87)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="discount-badge">-57%</div>
+                <img src="watches.2.jpg" alt="Apple iPad 3" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Hand watches</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 25,000</span>
+                        <span class="original-price">UGX 30,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (35)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="discount-badge">-47%</div>
+                <img src="anklet.4.jpg" alt="FOVER POWER KEY" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Anklets</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 10,000</span>
+                        <span class="original-price">UGX 15,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (62)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="discount-badge">-52%</div>
+                <img src="bracelet.1.jpg" alt="Vision Plus TV" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Bracelets</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 50,000</span>
+                        <span class="original-price">UGX 60,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        (124)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+             <!-- Product 4 -->
+             <div class="product-card">
+                <div class="discount-badge">-57%</div>
+                <img src="perfume.1.jpg" alt="Apple iPad 3" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Perfumes</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 25,000</span>
+                        <span class="original-price">UGX 30,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (35)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="discount-badge">-47%</div>
+                <img src="glasses.jpg" alt="FOVER POWER KEY" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Glasses</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 10,000</span>
+                        <span class="original-price">UGX 15,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (62)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="discount-badge">-52%</div>
+                <img src="earring.4.jpg" alt="Vision Plus TV" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Ear rings</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 10,000</span>
+                        <span class="original-price">UGX 15,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        (124)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+                
+            </div>
+            <div class="product-card">
+                <div class="discount-badge">-57%</div>
+                <img src="belt.6.jpg" alt="Apple iPad 3" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Belt</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 25,000</span>
+                        <span class="original-price">UGX 30,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (35)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="discount-badge">-47%</div>
+                <img src="bangles.2.jpg" alt="FOVER POWER KEY" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Anklets</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 10,000</span>
+                        <span class="original-price">UGX 15,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        (62)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="discount-badge">-52%</div>
+                <img src="pexels-kinkate-208052.jpg" alt="Vision Plus TV" class="product-image">
+                <div class="product-info">
+                    <h3 class="product-title">Makeup</h3>
+                    <div class="product-price">
+                        <span class="current-price">UGX 50,000</span>
+                        <span class="original-price">UGX 60,000</span>
+                    </div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        (124)
+                    </div>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+        </div>
+    </div>
+    <div class="products-grid">
+        <!-- Product 1 -->
+        <div class="product-card">
+            <div class="discount-badge">-30%</div>
+            <img src="belts.2.jpg" alt="SPJ 4 Litres, Hot Air Fryer" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Original Belts</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 20,000</span>
+                    <span class="original-price">UGX 28,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (62)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 2 -->
+        <div class="product-card">
+            <div class="discount-badge">-11%</div>
+            <img src="gangle.1.jpg" alt="Uganda Waragi Lemon" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Ear Rings and Bangles</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10000</span>
+                    <span class="original-price">UGX 15000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <i class="far fa-star"></i>
+                    (48)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 3 -->
+        <div class="product-card">
+            <div class="discount-badge">-33%</div>
+            <img src="cape.2.jpg" alt="Pixel 120 Liters Fridge" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Caps</h3>
+                <div class="product-price">
+                    <span class="current-price">Ugx.20,000</span>
+                    <span class="original-price">Ugx.30,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (87)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 4 -->
+        <div class="product-card">
+            <div class="discount-badge">-57%</div>
+            <img src="watches.2.jpg" alt="Apple iPad 3" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Hand watches</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 25,000</span>
+                    <span class="original-price">UGX 30,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (35)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 5 -->
+        <div class="product-card">
+            <div class="discount-badge">-47%</div>
+            <img src="anklet.5.jpg" alt="FOVER POWER KEY" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Anklets</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10,000</span>
+                    <span class="original-price">UGX 15,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (62)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 6 -->
+        <div class="product-card">
+            <div class="discount-badge">-52%</div>
+            <img src="bracelet.1.jpg" alt="Vision Plus TV" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Bracelets</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 50,000</span>
+                    <span class="original-price">UGX 60,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (124)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+         <!-- Product 4 -->
+         <div class="product-card">
+            <div class="discount-badge">-57%</div>
+            <img src="perfume.1.jpg" alt="Apple iPad 3" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Perfumes</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 25,000</span>
+                    <span class="original-price">UGX 30,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (35)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 5 -->
+        <div class="product-card">
+            <div class="discount-badge">-47%</div>
+            <img src="glasses.2.jpg" alt="FOVER POWER KEY" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Glasses</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10,000</span>
+                    <span class="original-price">UGX 15,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (62)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 6 -->
+        <div class="product-card">
+            <div class="discount-badge">-52%</div>
+            <img src="earring.11.jpg" alt="Vision Plus TV" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Ear rings</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10,000</span>
+                    <span class="original-price">UGX 15,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (124)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            
+        </div>
+        <div class="product-card">
+            <div class="discount-badge">-57%</div>
+            <img src="belt.3.jpg" alt="Apple iPad 3" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Belt</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 25,000</span>
+                    <span class="original-price">UGX 30,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (35)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 5 -->
+        <div class="product-card">
+            <div class="discount-badge">-47%</div>
+            <img src="bangles.2.jpg" alt="FOVER POWER KEY" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Anklets</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10,000</span>
+                    <span class="original-price">UGX 15,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (62)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 6 -->
+        <div class="product-card">
+            <div class="discount-badge">-52%</div>
+            <img src="pexels-kinkate-208052.jpg" alt="Vision Plus TV" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Makeup</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 50,000</span>
+                    <span class="original-price">UGX 60,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (124)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+    </div>
+</div>
+    </div>
+
+    <script>
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productCard = this.closest('.product-card');
+                const productName = productCard.querySelector('.product-title').textContent;
+                const productPrice = productCard.querySelector('.current-price').textContent;
+                
+                // In a real implementation, this would add the item to the cart
+                alert(`Added to cart: ${productName}\nPrice: ${productPrice}`);
+                
+                // Visual feedback
+                this.textContent = 'Added!';
+                this.style.backgroundColor = '#4CAF50';
+                setTimeout(() => {
+                    this.textContent = 'Add to Cart';
+                    this.style.backgroundColor = 'var(--primary-color)';
+                }, 2000);
+            });
+        });
+
+        // Start shopping button
+        document.querySelector('.start-shopping-btn').addEventListener('click', function() {
+            // In a real implementation, this would redirect to products page
+            alert('Redirecting to shopping page...');
+        });
+
+        // See all button
+        document.querySelector('.see-all').addEventListener('click', function(e) {
+            e.preventDefault();
+            // In a real implementation, this would show all top products
+            alert('Showing all top selling products...');
+        });
+    </script>
+     <section class="reviews">
+        <h2>Customer Reviews</h2>
+        <div id="review-list">
+            <p>No reviews yet. Be the first to leave a review!</p>
+        </div>
+        <h3>Leave a Review</h3>
+        <input type="text" id="review-name" placeholder="Your Name">
+        <textarea id="review-text" placeholder="Write your review here..."></textarea>
+        <label for="rating">Rating:</label>
+        <select id="rating">
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Good</option>
+            <option value="3">3 - Average</option>
+            <option value="2">2 - Poor</option>
+            <option value="1">1 - Terrible</option>
+        </select>
+        <button onclick="submitReview()">Submit Review</button>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Contact us: Flexifas@gmail.com</p>
+        <p>Follow us: 
+            <a href="#">Facebook</a> | 
+            <a href="#">Twitter</a> | 
+            <a href="#">Instagram</a>
+        </p>
+        <p>&copy; 2025 FLEXI FUSHION ACCESSORIES. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

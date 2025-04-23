@@ -1,0 +1,121 @@
+/* General Styles */
+body {
+    background-color: #ff6600;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    
+}
+video{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100;
+    min-height: 100;
+    width: auto;
+    height: auto;
+    z-index: -1;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #333;
+    color: white;
+    padding: 10px 20px;
+}
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+nav a {
+    margin: 0 15px;
+    color: white;
+    text-decoration: none;
+}
+.search-bar {
+    display: flex;
+}
+.search-bar input {
+    padding: 5px;
+}
+.search-bar button {
+    background: #ff6600;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+    background: url('images/hero-banner.jpg') no-repeat center center/cover;
+    color: white;
+    padding: 100px 20px;
+}
+.hero h1 {
+    font-size: 2.5em;
+}
+.hero .btn {
+    background: #ff6600;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Featured Products */
+.featured-products {
+    padding: 20px;
+}
+.product-container {
+    display: flex;
+    justify-content: center;
+}
+.product {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+}
+.product img {
+    width: 100%;
+}
+.product button {
+    background: #ff6600;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Call to Action */
+.call-to-action {
+    background: #ff6600;
+    color: white;
+    padding: 30px;
+}
+.call-to-action .btn {
+    background: white;
+    color: #ff6600;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+}
+footer a {
+    color: #ff6600;
+    text-decoration: none;
+}

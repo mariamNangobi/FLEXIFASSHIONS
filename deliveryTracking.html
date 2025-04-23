@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Tracking - FLEXI FUSHION ACCESSORIES Help Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #34c759;
+            --secondary-color: #f7f7f7;
+            --accent-color: #8bc34a;
+            --text-color: #333;
+            --light-text: #666;
+            --border-radius: 8px;
+            --box-shadow:  #66cc99;
+            --footer-bg: #2e865f;
+            --footer-text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fde617;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .help-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .help-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .help-header p {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .tracking-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tracking-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tracking-form input {
+            flex-grow: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .tracking-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tracking-result {
+            display: none;
+            margin-top: 2rem;
+            border-top: 1px solid #eee;
+            padding-top: 2rem;
+        }
+
+        .tracking-steps {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 2rem;
+        }
+
+        .tracking-steps::before {
+            content: '';
+            position: absolute;
+            left: 1.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .tracking-step {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        .tracking-step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tracking-step::before {
+            content: '';
+            position: absolute;
+            left: -3.1rem;
+            top: 0;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .tracking-step.active::before {
+            background-color: white;
+            border: 3px solid var(--primary-color);
+        }
+
+        .tracking-step.completed::before {
+            background-color: var(--primary-color);
+        }
+
+        .tracking-date {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .tracking-status {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .tracking-location {
+            color: var(--light-text);
+        }
+
+        .delivery-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .info-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+
+        .info-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .info-card h3 i {
+            font-size: 1.2rem;
+        }
+
+        .info-card p {
+            color: var(--light-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-support {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .contact-support h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .contact-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            background-color: var(--secondary-color);
+            transition: background-color 0.3s;
+        }
+
+        .contact-option:hover {
+            background-color: #e8e8e8;
+        }
+
+        @media (max-width: 768px) {
+            .help-header h1 {
+                font-size: 2rem;
+            }
+            
+            .tracking-form {
+                flex-direction: column;
+            }
+            
+            .tracking-form button {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="help-header">
+            <h1>Delivery Tracking</h1>
+            <p>Track your order status and estimated delivery time</p>
+        </div>
+
+        <div class="tracking-container">
+            <h2>Track Your Order</h2>
+            <p>Enter your order number to check the delivery status</p>
+            
+            <form class="tracking-form" id="trackingForm">
+                <input type="text" placeholder="Order number (e.g. JM12345678)" required>
+                <button type="submit">Track</button>
+            </form>
+            
+            <div class="tracking-result" id="trackingResult">
+                <h3>Order #JM12345678</h3>
+                <p>Estimated delivery: <strong>Thursday, May 25</strong></p>
+                
+                <div class="tracking-steps">
+                    <div class="tracking-step completed">
+                        <div class="tracking-date">May 20, 2023</div>
+                        <div class="tracking-status">Order Confirmed</div>
+                        <div class="tracking-location">Your order has been received</div>
+                    </div>
+                    
+                    <div class="tracking-step completed">
+                        <div class="tracking-date">May 21, 2023</div>
+                        <div class="tracking-status">Order Processed</div>
+                        <div class="tracking-location">Seller is preparing your order</div>
+                    </div>
+                    
+                    <div class="tracking-step completed">
+                        <div class="tracking-date">May 22, 2023</div>
+                        <div class="tracking-status">Shipped</div>
+                        <div class="tracking-location">Package left the seller facility</div>
+                    </div>
+                    
+                    <div class="tracking-step active">
+                        <div class="tracking-date">May 23, 2023</div>
+                        <div class="tracking-status">In Transit</div>
+                        <div class="tracking-location">Package is on the way to your city</div>
+                    </div>
+                    
+                    <div class="tracking-step">
+                        <div class="tracking-date">Expected May 25, 2023</div>
+                        <div class="tracking-status">Out for Delivery</div>
+                        <div class="tracking-location">Package will arrive today</div>
+                    </div>
+                    
+                    <div class="tracking-step">
+                        <div class="tracking-date">Expected May 25, 2023</div>
+                        <div class="tracking-status">Delivered</div>
+                        <div class="tracking-location">Package delivered to your address</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="delivery-info">
+            <div class="info-card">
+                <h3><i class="fas fa-truck"></i> Delivery Timelines</h3>
+                <p><strong>Standard Delivery:</strong> 3-7 business days</p>
+                <p><strong>Express Delivery:</strong> 1-3 business days (available for select items)</p>
+                <p><strong>Same Day Delivery:</strong> Available in select cities for orders placed before 12pm</p>
+                <p>Delivery times may vary depending on your location and product availability.</p>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-map-marker-alt"></i> Delivery Areas</h3>
+                <p>We deliver to all major cities and towns across the country. Enter your address during checkout to verify delivery availability to your location.</p>
+                <p>Some remote areas may have longer delivery times or additional delivery fees.</p>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-user-tie"></i> Delivery Instructions</h3>
+                <p>You can provide special delivery instructions during checkout, such as:</p>
+                <ul style="color: var(--light-text); margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Leave with neighbor</li>
+                    <li>Leave at security</li>
+                    <li>Call before delivery</li>
+                </ul>
+                <p style="margin-top: 1rem;">Our delivery agents will follow your instructions when possible.</p>
+            </div>
+        </div>
+
+        <div class="contact-support">
+            <h2>Need Help With Your Delivery?</h2>
+            <p>Contact our customer support team for assistance with your order delivery</p>
+            
+            <div class="contact-options">
+                <div class="contact-option">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Call: 0200804010</span>
+                </div>
+                <div class="contact-option">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp: 0781950263</span>
+                </div>
+                <div class="contact-option">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email Support</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tracking form submission
+        document.getElementById('trackingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('trackingResult').style.display = 'block';
+            
+            // Scroll to tracking result
+            document.getElementById('trackingResult').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Animation for info cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoCards = document.querySelectorAll('.info-card');
+            
+            infoCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+                
+                // Trigger reflow to enable animation
+                void card.offsetWidth;
+                
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

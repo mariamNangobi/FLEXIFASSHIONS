@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Logout System</title>
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <style>
+    /* Modern CSS with Flexbox */
+    :root {
+      --primary-color: #3498db;
+      --danger-color: #e74c3c;
+      --success-color: #2ecc71;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .logout-container {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    
+    .logout-header {
+      background: var(--primary-color);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .logout-content {
+      padding: 2rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+    
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-secondary {
+      background: #f8f9fa;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    
+    .security-alert {
+      background: #f8f9fa;
+      border-left: 4px solid var(--danger-color);
+      padding: 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 576px) {
+      .logout-container {
+        margin: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="logout-container">
+    <div class="logout-header">
+      <h2>Secure Logout</h2>
+    </div>
+    <div class="logout-content">
+      <div id="logoutMessage">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="var(--success-color)" viewBox="0 0 16 16" style="display: block; margin: 0 auto 1.5rem;">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+          <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+        </svg>
+        <h3 style="text-align: center; margin-bottom: 0.5rem;">You're Logged Out</h3>
+        <p style="text-align: center; color: #666;">All sessions have been securely terminated.</p>
+      </div>
+      
+      <div style="margin-top: 2rem;">
+        <a href="account.html" class="btn btn-primary btn-block">Log In Again</a>
+        <a href="index.html" class="btn btn-secondary btn-block" style="margin-top: 0.75rem;">Return Home</a>
+      </div>
+      
+      <div class="security-alert">
+        <strong>Security Notice:</strong> For complete security on shared computers, please also close all browser windows.
+      </div>
+    </div>
+  </div>
+
+  <!-- Client-Side Logout Script -->
+  <script>
+    // Immediately clear all client-side storage
+    (function secureLogout() {
+      // Clear storage
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      // Clear cookies
+      document.cookie.split(';').forEach(cookie => {
+        const [name] = cookie.trim().split('=');
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      });
+      
+      // Prevent back navigation
+      history.pushState(null, null, location.href);
+      window.onpopstate = function() {
+        history.go(1);
+      };
+      
+      // Optional: Send logout request to server
+      fetch('/api/logout', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': '<?php echo $csrfToken; ?>' // Replace with actual CSRF token in production
+        }
+      }).catch(() => { /* Silent fail */ });
+    })();
+  </script>
+
+  <!-- Embedded Node.js Server for Demo Purposes -->
+  <script type="text/javascript">
+    // This section would normally be in a separate server.js file
+    // Included here for complete demonstration
+    
+    /*
+    // Node.js/Express Backend (example)
+    const express = require('express');
+    const session = require('express-session');
+    const app = express();
+    
+    // Session configuration
+    app.use(session({
+      secret: 'your-secret-key',
+      resave: false,
+      saveUninitialized: false,
+      cookie: { 
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict'
+      }
+    }));
+    
+    // Logout endpoint
+    app.post('/api/logout', (req, res) => {
+      // Destroy session
+      req.session.destroy(err => {
+        if (err) {
+          console.error('Logout error:', err);
+          return res.status(500).json({ error: 'Logout failed' });
+        }
+        
+        // Clear cookies
+        res.clearCookie('connect.sid');
+        
+        // Security headers
+        res.setHeader('Cache-Control', 'no-store, no-cache');
+        res.setHeader('Clear-Site-Data', '"cookies", "storage"');
+        
+        // Respond
+        res.json({ success: true });
+      });
+    });
+    
+    app.listen(3000, () => console.log('Server running on port 3000'));
+    */
+  </script>
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ sidebarOpen: false, savedLocations: [] }" class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Map Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body{
+      background-color: #f87f0d;;
+    }
+    #map {
+      height: 100%;
+    }
+    .location-card {
+      transition: all 0.2s ease;
+    }
+    .location-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .custom-marker {
+      background-color: #f3f63b;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+    }
+    .custom-marker i {
+      margin-top: 1px;
+    }
+  </style>
+</head>
+<body class="h-screen overflow-hidden">
+
+  <!-- Header -->
+  <header class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
+    <div class="flex items-center space-x-4">
+      <button @click="sidebarOpen = !sidebarOpen" class="text-xl md:hidden"><i class="fas fa-bars"></i></button>
+      <h1 class="text-2xl font-semibold"><i class="fas fa-map-marked-alt text-blue-500"></i> Location Mapper</h1>
+    </div>
+    <button onclick="document.documentElement.classList.toggle('dark')" class="text-xl">
+      <i class="fas fa-moon dark:hidden"></i>
+      <i class="fas fa-sun hidden dark:inline"></i>
+    </button>
+  </header>
+
+  <div class="flex h-[calc(100%-64px)]">
+    <!-- Sidebar -->
+    <aside :class="sidebarOpen ? 'block' : 'hidden md:block'" class="bg-white dark:bg-gray-800 w-full md:w-1/3 lg:w-1/4 p-4 overflow-y-auto border-r border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-bold mb-4">📌 Saved Locations</h2>
+
+      <div class="mb-3 flex">
+        <input 
+          x-model="searchTerm" 
+          type="text" 
+          placeholder="Search..." 
+          class="flex-1 px-3 py-2 rounded-l border border-gray-300 focus:outline-none dark:bg-gray-700" 
+          @input="filterLocations"
+        />
+        <button class="px-3 py-2 bg-blue-500 text-white rounded-r"><i class="fas fa-search"></i></button>
+      </div>
+
+      <div id="savedLocations" class="space-y-3 text-sm">
+        <template x-for="(location, index) in filteredLocations" :key="index">
+          <div 
+            class="location-card bg-white dark:bg-gray-700 p-3 rounded-lg shadow cursor-pointer border border-gray-200 dark:border-gray-600"
+            @click="flyToLocation(location)"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-bold" x-text="location.name || 'Unnamed Location'"></h3>
+                <p class="text-gray-500 dark:text-gray-300 text-xs" x-text="location.address"></p>
+              </div>
+              <div class="flex space-x-1">
+                <button 
+                  class="text-blue-500 hover:text-blue-700"
+                  @click.stop="editLocation(index)"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button 
+                  class="text-red-500 hover:text-red-700"
+                  @click.stop="deleteLocation(index)"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="mt-2 flex justify-between items-center text-xs">
+              <span class="px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200" x-text="location.type"></span>
+              <span class="text-gray-500 dark:text-gray-400" x-text="new Date(location.timestamp).toLocaleString()"></span>
+            </div>
+          </div>
+        </template>
+        <div 
+          x-show="savedLocations.length === 0" 
+          class="text-center text-gray-500 dark:text-gray-400"
+        >
+          No saved locations yet
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main map and controls -->
+    <main class="flex-1 relative bg-gray-200 dark:bg-gray-900">
+      <!-- Controls -->
+      <div class="absolute z-10 top-4 left-4 right-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <input 
+            id="addressInput" 
+            type="text" 
+            placeholder="Enter address..." 
+            class="col-span-2 px-3 py-2 rounded border dark:bg-gray-700" 
+          />
+          <button id="searchBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition"><i class="fas fa-search"></i> Search</button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <select id="locationType" class="col-span-1 px-3 py-2 rounded dark:bg-gray-700">
+            <option value="generic">Generic</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="hotel">Hotel</option>
+            <option value="attraction">Attraction</option>
+            <option value="work">Work</option>
+            <option value="home">Home</option>
+          </select>
+          <input id="locationName" type="text" placeholder="Name (optional)" class="col-span-2 px-3 py-2 rounded dark:bg-gray-700" />
+          <div class="flex space-x-1">
+            <button id="saveBtn" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded w-full transition"><i class="fas fa-save"></i></button>
+            <button id="exportBtn" class="bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-2 rounded w-full transition"><i class="fas fa-download"></i></button>
+            <button id="clearBtn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded w-full transition"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map container -->
+      <div id="map" class="absolute inset-0 z-0"></div>
+      
+      <!-- Current coordinates display -->
+      <div class="absolute z-10 bottom-4 left-4 bg-white dark:bg-gray-800 rounded-lg shadow p-2 text-xs">
+        <span id="coordinates">Lat: 0.0000, Lng: 0.0000</span>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit Location Modal -->
+  <div 
+    x-show="showEditModal" 
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" 
+    x-transition
+  >
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-4">Edit Location</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Name</label>
+          <input 
+            x-model="editingLocation.name" 
+            type="text" 
+            class="w-full px-3 py-2 rounded border dark:bg-gray-700"
+          >
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Type</label>
+          <select 
+            x-model="editingLocation.type" 
+            class="w-full px-3 py-2 rounded border dark:bg-gray-700"
+          >
+            <option value="generic">Generic</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="hotel">Hotel</option>
+            <option value="attraction">Attraction</option>
+            <option value="work">Work</option>
+            <option value="home">Home</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Address</label>
+          <input 
+            x-model="editingLocation.address" 
+            type="text" 
+            class="w-full px-3 py-2 rounded border dark:bg-gray-700"
+          >
+        </div>
+        <div class="flex justify-end space-x-2 pt-4">
+          <button 
+            @click="showEditModal = false" 
+            class="px-4 py-2 rounded border border-gray-300 dark:border-gray-600"
+          >
+            Cancel
+          </button>
+          <button 
+            @click="saveEditedLocation" 
+            class="px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('app', () => ({
+        sidebarOpen: false,
+        savedLocations: JSON.parse(localStorage.getItem('savedLocations')) || [],
+        searchTerm: '',
+        filteredLocations: [],
+        showEditModal: false,
+        editingIndex: -1,
+        editingLocation: {},
+        
+        init() {
+          // Initialize filtered locations
+          this.filteredLocations = [...this.savedLocations];
+          
+          // Load saved locations from localStorage
+          this.loadSavedLocations();
+          
+          // Set up event listeners
+          this.setupEventListeners();
+        },
+        
+        filterLocations() {
+          if (!this.searchTerm) {
+            this.filteredLocations = [...this.savedLocations];
+            return;
+          }
+          
+          const term = this.searchTerm.toLowerCase();
+          this.filteredLocations = this.savedLocations.filter(location => 
+            (location.name && location.name.toLowerCase().includes(term)) ||
+            (location.address && location.address.toLowerCase().includes(term)) ||
+            (location.type && location.type.toLowerCase().includes(term))
+          );
+        },
+        
+        flyToLocation(location) {
+          map.flyTo([location.lat, location.lng], 15);
+          
+          // Highlight the marker
+          markers.forEach(marker => {
+            if (marker.options.locationId === location.id) {
+              marker.openPopup();
+            }
+          });
+        },
+        
+        editLocation(index) {
+          this.editingIndex = index;
+          this.editingLocation = {...this.savedLocations[index]};
+          this.showEditModal = true;
+        },
+        
+        saveEditedLocation() {
+          this.savedLocations[this.editingIndex] = this.editingLocation;
+          this.saveToLocalStorage();
+          this.filterLocations();
+          this.showEditModal = false;
+          updateMarkers();
+        },
+        
+        deleteLocation(index) {
+          if (confirm("Are you sure you want to delete this location?")) {
+            this.savedLocations.splice(index, 1);
+            this.saveToLocalStorage();
+            this.filterLocations();
+            updateMarkers();
+          }
+        },
+        
+        saveToLocalStorage() {
+          localStorage.setItem('savedLocations', JSON.stringify(this.savedLocations));
+        },
+        
+        loadSavedLocations() {
+          const saved = localStorage.getItem('savedLocations');
+          if (saved) {
+            this.savedLocations = JSON.parse(saved);
+            this.filteredLocations = [...this.savedLocations];
+          }
+        },
+        
+        setupEventListeners() {
+          // These will be set up after the map is initialized
+        },
+        
+        addNewLocation(location) {
+          this.savedLocations.unshift(location);
+          this.saveToLocalStorage();
+          this.filterLocations();
+        },
+        
+        exportToCSV() {
+          const csv = Papa.unparse(this.savedLocations);
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.setAttribute('href', url);
+          link.setAttribute('download', `locations_${new Date().toISOString().slice(0,10)}.csv`);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }));
+    });
+  </script>
+  <script>
+    // Map initialization
+    const map = L.map('map').setView([1.3733, 32.2903], 7);
+    
+    // Base maps
+    const baseMaps = {
+      "Street": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+      }),
+      "Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '© Esri'
+      }),
+      "Topographic": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenTopoMap'
+      })
+    };
+    baseMaps["Street"].addTo(map);
+    L.control.layers(baseMaps).addTo(map);
+    
+    // Feature group for drawn items
+    const drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+    
+    // Draw control
+    const drawControl = new L.Control.Draw({
+      edit: { featureGroup: drawnItems },
+      draw: {
+        circle: false,
+        polyline: false,
+        marker: {
+          icon: L.divIcon({ className: 'custom-marker', html: '<i class="fas fa-map-marker-alt"></i>' })
+        }
+      }
+    });
+    map.addControl(drawControl);
+    
+    // Store markers
+    const markers = [];
+    
+    // Update coordinates display
+    map.on('mousemove', (e) => {
+      document.getElementById('coordinates').textContent = 
+        `Lat: ${e.latlng.lat.toFixed(4)}, Lng: ${e.latlng.lng.toFixed(4)}`;
+    });
+    
+    // Initialize Alpine.js
+    document.addEventListener('DOMContentLoaded', () => {
+      const app = Alpine.data('app');
+      
+      // Update markers based on saved locations
+      function updateMarkers() {
+        // Clear existing markers
+        markers.forEach(marker => map.removeLayer(marker));
+        markers.length = 0;
+        
+        // Add new markers
+        app.savedLocations.forEach(location => {
+          const marker = L.marker([location.lat, location.lng], {
+            locationId: location.id,
+            icon: getIconForType(location.type)
+          })
+          .addTo(map)
+          .bindPopup(`
+            <div class="space-y-1">
+              <h3 class="font-bold">${location.name || 'Unnamed Location'}</h3>
+              <p class="text-sm">${location.address || 'No address'}</p>
+              <div class="flex justify-between items-center text-xs">
+                <span class="px-2 py-1 rounded-full ${getColorForType(location.type)}">
+                  ${location.type}
+                </span>
+                <span>${new Date(location.timestamp).toLocaleString()}</span>
+              </div>
+            </div>
+          `);
+          
+          markers.push(marker);
+        });
+      }
+      
+      // Get appropriate icon for location type
+      function getIconForType(type) {
+        let iconClass = 'fas fa-map-marker-alt';
+        let bgColor = 'bg-blue-500';
+        
+        switch(type) {
+          case 'restaurant': 
+            iconClass = 'fas fa-utensils';
+            bgColor = 'bg-red-500';
+            break;
+          case 'hotel': 
+            iconClass = 'fas fa-hotel';
+            bgColor = 'bg-purple-500';
+            break;
+          case 'attraction': 
+            iconClass = 'fas fa-camera';
+            bgColor = 'bg-yellow-500';
+            break;
+          case 'work': 
+            iconClass = 'fas fa-briefcase';
+            bgColor = 'bg-green-500';
+            break;
+          case 'home': 
+            iconClass = 'fas fa-home';
+            bgColor = 'bg-indigo-500';
+            break;
+        }
+        
+        return L.divIcon({ 
+          className: `custom-marker ${bgColor}`, 
+          html: `<i class="${iconClass}"></i>` 
+        });
+      }
+      
+      // Get color class for type badge
+      function getColorForType(type) {
+        switch(type) {
+          case 'restaurant': return 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200';
+          case 'hotel': return 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200';
+          case 'attraction': return 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200';
+          case 'work': return 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200';
+          case 'home': return 'bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200';
+          default: return 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200';
+        }
+      }
+      
+      // Handle drawing events
+      map.on(L.Draw.Event.CREATED, function (e) {
+        const layer = e.layer;
+        const latlng = layer.getLatLng();
+        
+        // Show save dialog
+        const type = document.getElementById('locationType').value;
+        const name = document.getElementById('locationName').value || undefined;
+        
+        // Reverse geocode to get address
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`)
+          .then(response => response.json())
+          .then(data => {
+            const address = data.display_name || 'Address not found';
+            
+            const newLocation = {
+              id: Date.now().toString(),
+              name: name,
+              type: type,
+              address: address,
+              lat: latlng.lat,
+              lng: latlng.lng,
+              timestamp: new Date().toISOString()
+            };
+            
+            app.addNewLocation(newLocation);
+            updateMarkers();
+            
+            // Reset form
+            document.getElementById('locationName').value = '';
+          })
+          .catch(() => {
+            const newLocation = {
+              id: Date.now().toString(),
+              name: name,
+              type: type,
+              address: 'Address not found',
+              lat: latlng.lat,
+              lng: latlng.lng,
+              timestamp: new Date().toISOString()
+            };
+            
+            app.addNewLocation(newLocation);
+            updateMarkers();
+            document.getElementById('locationName').value = '';
+          });
+        
+        drawnItems.addLayer(layer);
+      });
+      
+      // Search functionality
+      document.getElementById('searchBtn').addEventListener('click', () => {
+        const query = document.getElementById('addressInput').value;
+        if (!query) return;
+        
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.length > 0) {
+              const result = data[0];
+              map.flyTo([result.lat, result.lon], 15);
+              
+              // Add temporary marker
+              const marker = L.marker([result.lat, result.lon], {
+                icon: L.divIcon({ className: 'custom-marker bg-gray-500', html: '<i class="fas fa-search"></i>' })
+              })
+              .addTo(map)
+              .bindPopup(`
+                <div class="space-y-1">
+                  <h3 class="font-bold">Search Result</h3>
+                  <p class="text-sm">${result.display_name}</p>
+                  <button 
+                    onclick="saveSearchResult(${result.lat}, ${result.lon}, '${result.display_name.replace(/'/g, "\\'")}')" 
+                    class="w-full mt-2 px-3 py-1 bg-blue-500 text-white text-sm rounded"
+                  >
+                    Save This Location
+                  </button>
+                </div>
+              `)
+              .openPopup();
+              
+              // Remove after 30 seconds
+              setTimeout(() => map.removeLayer(marker), 30000);
+            } else {
+              alert('Location not found');
+            }
+          });
+      });
+      
+      // Save button
+      document.getElementById('saveBtn').addEventListener('click', () => {
+        const center = map.getCenter();
+        const type = document.getElementById('locationType').value;
+        const name = document.getElementById('locationName').value || undefined;
+        
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${center.lat}&lon=${center.lng}`)
+          .then(response => response.json())
+          .then(data => {
+            const address = data.display_name || 'Address not found';
+            
+            const newLocation = {
+              id: Date.now().toString(),
+              name: name,
+              type: type,
+              address: address,
+              lat: center.lat,
+              lng: center.lng,
+              timestamp: new Date().toISOString()
+            };
+            
+            app.addNewLocation(newLocation);
+            updateMarkers();
+            document.getElementById('locationName').value = '';
+          })
+          .catch(() => {
+            const newLocation = {
+              id: Date.now().toString(),
+              name: name,
+              type: type,
+              address: 'Address not found',
+              lat: center.lat,
+              lng: center.lng,
+              timestamp: new Date().toISOString()
+            };
+            
+            app.addNewLocation(newLocation);
+            updateMarkers();
+            document.getElementById('locationName').value = '';
+          });
+      });
+      
+      // Export button
+      document.getElementById('exportBtn').addEventListener('click', () => {
+        app.exportToCSV();
+      });
+      
+      // Clear button
+      document.getElementById('clearBtn').addEventListener('click', () => {
+        if (confirm("Clear all saved locations?")) {
+          app.savedLocations = [];
+          app.saveToLocalStorage();
+          app.filterLocations();
+          updateMarkers();
+        }
+      });
+      
+      // Initialize with any saved locations
+      updateMarkers();
+      
+      // Make saveSearchResult available globally
+      window.saveSearchResult = function(lat, lng, address) {
+        const type = document.getElementById('locationType').value;
+        const name = document.getElementById('locationName').value || undefined;
+        
+        const newLocation = {
+          id: Date.now().toString(),
+          name: name,
+          type: type,
+          address: address,
+          lat: parseFloat(lat),
+          lng: parseFloat(lng),
+          timestamp: new Date().toISOString()
+        };
+        
+        app.addNewLocation(newLocation);
+        updateMarkers();
+        document.getElementById('locationName').value = '';
+      };
+    });
+  </script>
+</body>
+</html>

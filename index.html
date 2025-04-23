@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLEXI FUSHION ACCESSORIES® - Help Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #34c759;
+            --secondary-color: #f7f7f7;
+            --accent-color: #8bc34a;
+            --text-color: #333;
+            --light-text: #666;
+            --border-radius: 8px;
+            --box-shadow:  #66cc99;
+            --footer-bg: #74887f;
+            --footer-text: #ffffff;
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f87f0d;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            
+        } 
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.8rem 2rem;
+        }
+        .nav-center {
+            flex-grow: 1;
+            margin: 0 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex-grow: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            gap: 0.3rem;
+        }
+
+        .nav-icon i {
+            font-size: 1.3rem;
+        }
+
+        .cart-count {
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        .nav-icon-container {
+            position: relative;
+        }
+
+        /* Help Dropdown Styles */
+        .help-dropdown {
+            position: relative;
+        }
+
+        .help-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            gap: 0.3rem;
+        }
+
+        .help-btn i {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .help-dropdown-content {
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            z-index: 1;
+            display: none;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .help-dropdown-content.show {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .dropdown-header {
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .dropdown-header i {
+            font-size: 1.1rem;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: var(--light-text);
+            text-align: center;
+        }
+
+        .live-help {
+            background-color: #f0f8ff;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .live-help i {
+            color: var(--primary-color);
+        }
+
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            transition: left 0.3s;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.show {
+            left: 0;
+        }
+
+        .mobile-menu-header {
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu-section {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-menu-section h3 {
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            text-decoration: none;
+            color: var(--text-color);
+            gap: 1rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .help-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .help-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .help-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .help-header p {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .help-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .help-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            flex: 1 1 400px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .help-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .help-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .help-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .help-card p {
+            margin-bottom: 1.5rem;
+            color: var(--light-text);
+        }
+
+        .contact-methods {
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-details {
+            flex-grow: 1;
+        }
+
+        .contact-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-color);
+        }
+
+        .contact-details p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .contact-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 2rem 0;
+            opacity: 0.5;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .categories-dropdown {
+            position: relative;
+        }
+
+        .categories-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .categories-menu {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background-color: white;
+            width: 250px;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            padding: 1rem 0;
+            display: none;
+            z-index: 100;
+        }
+
+        .categories-dropdown:hover .categories-menu {
+            display: block;
+        }
+
+        .category-item {
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: background-color 0.2s;
+        }
+
+        .category-item:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .nav-center {
+            flex-grow: 1;
+            margin: 0 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex-grow: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            gap: 0.3rem;
+        }
+
+        .nav-icon i {
+            font-size: 1.3rem;
+        }
+
+        .cart-count {
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        .nav-icon-container {
+            position: relative;
+        }
+
+        /* Help Dropdown Styles */
+        .help-dropdown {
+            position: relative;
+        }
+
+        .help-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            gap: 0.3rem;
+        }
+
+        .help-btn i {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .help-dropdown-content {
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+            z-index: 1;
+            display: none;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .help-dropdown-content.show {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .dropdown-header {
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .dropdown-header i {
+            font-size: 1.1rem;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: var(--light-text);
+            text-align: center;
+        }
+
+        .live-help {
+            background-color: #f0f8ff;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .live-help i {
+            color: var(--primary-color);
+        }
+
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            transition: left 0.3s;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.show {
+            left: 0;
+        }
+
+        .mobile-menu-header {
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu-section {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mobile-menu-section h3 {
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            text-decoration: none;
+            color: var(--text-color);
+            gap: 1rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .help-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .help-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .help-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .help-header p {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .help-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .help-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            flex: 1 1 400px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .help-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .help-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .help-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .help-card p {
+            margin-bottom: 1.5rem;
+            color: var(--light-text);
+        }
+
+        .contact-methods {
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-details {
+            flex-grow: 1;
+        }
+
+        .contact-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-color);
+        }
+
+        .contact-details p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .contact-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 2rem 0;
+            opacity: 0.5;
+        }
+
+        .product-card {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            font-size: 0.9rem;
+            z-index: 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            background-color: #f9f9f9;
+            padding: 1rem;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 2.8rem;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-price {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            color: #ffc107;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.6rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #e68a00;
+        }
+
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-section p {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .newsletter-form input[type="email"] {
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #e68a00;
+        }
+
+        .checkbox-group {
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-group input {
+            margin-right: 0.5rem;
+        }
+
+        .checkbox-group label {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+        }
+
+        .app-download {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .app-badge {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem;
+            border-radius: var(--border-radius);
+            transition: transform 0.3s;
+        }
+
+        .app-badge:hover {
+            transform: translateY(-3px);
+        }
+
+        .app-badge img {
+            width: 40px;
+            height: 40px;
+            margin-right: 1rem;
+        }
+
+        .app-info {
+            flex-grow: 1;
+        }
+
+        .app-info h4 {
+            margin-bottom: 0.2rem;
+        }
+
+        .app-info p {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--footer-text);
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .categories-dropdown {
+                display: none;
+            }
+
+            .nav-center {
+                margin: 0 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.8rem 1rem;
+            }
+
+            .nav-left {
+                gap: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-right {
+                gap: 1rem;
+            }
+
+            .nav-icon span {
+                display: none;
+            }
+
+            .nav-icon i {
+                font-size: 1.5rem;
+            }
+
+            .help-header h1 {
+                font-size: 2rem;
+            }
+
+            .help-card {
+                flex: 1 1 100%;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .help-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .contact-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .contact-icon {
+                margin-bottom: 0.5rem;
+                margin-right: 0;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .help-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .help-card:nth-child(1) { animation-delay: 0.1s; }
+        .help-card:nth-child(2) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="product.html" class="logo">FLEXI FUSHION ACCESSORIES®</a>
+                
+                <div class="categories-dropdown">
+                    <button class="categories-btn">
+                        <i class="fas fa-bars"></i>
+                        <span>Categories</span>
+                    </button>
+                    <div class="categories-menu">
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Earings</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-tv"></i>
+                            <span>Pins</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-blender"></i>
+                            <span>Necklaces</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-laptop"></i>
+                            <span>Bracelets</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Anklets</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-spa"></i>
+                            <span>Watches</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-home"></i>
+                            <span>Belts</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-shopping-basket"></i>
+                            <span>Hats</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-tshirt"></i>
+                            <span>Fashion</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-baby"></i>
+                            <span>Baby Products</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-store"></i>
+                            <span>Caps</span>
+                        </a>
+                        <a href="product.html" class="category-item">
+                            <i class="fas fa-ellipsis-h"></i>
+                            <span>Other categories</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-center">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for products, categories, and brands">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <a href="account.html" class="nav-icon">
+                    <i class="fas fa-user"></i>
+                    <span>Account</span>
+                </a>
+                
+                <!-- Help Dropdown -->
+                <div class="help-dropdown">
+                    <button class="help-btn" id="helpBtn">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help</span>
+                    </button>
+                    <div class="help-dropdown-content" id="helpDropdownContent">
+                        <div class="dropdown-header">
+                            <i class="fas fa-life-ring"></i>
+                            <span>Help Center</span>
+                        </div>
+                        <a href="order.html" class="dropdown-item">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Place an Order</span>
+                        </a>
+                        <a href="payment.html" class="dropdown-item">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Payments Options</span>
+                        </a>
+                        <a href="deliveryTracking.html" class="dropdown-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Delivery Timelines & Track your order</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Returns and Refunds</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Warranty</span>
+                        </a>
+                        <a href="#" class="dropdown-item live-help">
+                            <i class="fas fa-comments"></i>
+                            <span>Live Help</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <a href="cart.html" class="nav-icon">
+                    <div class="nav-icon-container">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">3</span>
+                    </div>
+                    <span>Cart</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Section with Jewelry Slideshow -->
+<main class="main-content">
+    <!-- Hero Slideshow -->
+    <section class="jewelry-slideshow">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+            <div class="slide-content">
+                <h2>FLEXI FASSION COLLECTIONS</h2>
+                <p>Handcrafted with premium materials for timeless elegance</p>
+                <a href="#necklaces" class="shop-btn">Shop Now</a>
+            </div>
+        </div>
+        
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1603974372035-98f40a1a03a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+            <div class="slide-content">
+                <h2>Diamond Rings</h2>
+                <p>Certified diamonds set in precious metals</p>
+                <a href="#rings" class="shop-btn">View Collection</a>
+            </div>
+        </div>
+        
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1602173574767-37ac01994b2a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+            <div class="slide-content">
+                <h2>Luxury Bracelets</h2>
+                <p>18K gold designs for every occasion</p>
+                <a href="#bracelets" class="shop-btn">Explore Designs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Jewelry Categories -->
+    <section class="featured-categories">
+        <div>
+        <h2 class="section-title">Our Collections</h2>
+        
+      
+</main>
+
+<style>
+    /* Main Content Styles */
+    .main-content {
+        max-width: 10400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Jewelry Slideshow */
+    .jewelry-slideshow {
+        position: relative;
+        height: 100vh;
+        width: 200vh;
+        overflow: hidden;
+        margin-bottom: 40px;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1.2s ease-in-out;
+    }
+
+    .slide.active {
+        opacity: 1;
+    }
+
+    .slide-content {
+        position: absolute;
+        bottom: 15%;
+        left: 10%;
+        background-color: rgba(0,0,0,0.7);
+        padding: 30px;
+        max-width: 500px;
+        border-left: 4px solid #d4af37;
+    }
+
+    .slide-content h2 {
+        color: #d4af37;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .slide-content p {
+        color: white;
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+    }
+
+    .shop-btn {
+        display: inline-block;
+        padding: 12px 30px;
+        background-color: #d4af37;
+        color: #000;
+        text-decoration: none;
+        font-weight: 600;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .shop-btn:hover {
+        background-color: #3cfd0c;
+        color: #d4af37;
+    }
+
+    /* Featured Categories */
+    .featured-categories {
+        margin: 60px 0;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.2rem;
+        margin-bottom: 40px;
+        color: #333;
+        position: relative;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 3px;
+        background-color: #d4af37;
+        margin: 15px auto 0;
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .category-card {
+        position: relative;
+        height: 350px;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .category-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .category-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .category-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .category-card h3 {
+        position: absolute;
+        bottom: 60px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: white;
+        font-size: 1.8rem;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+
+    .category-link {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 25px;
+        background-color: rgba(212, 175, 55, 0.9);
+        color: #000;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .category-link:hover {
+        background-color: #000;
+        color: #d4af37;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .jewelry-slideshow {
+            height: 50vh;
+        }
+        
+        .slide-content {
+            bottom: 10%;
+            left: 5%;
+            right: 5%;
+            max-width: none;
+            padding: 20px;
+        }
+        
+        .slide-content h2 {
+            font-size: 1.8rem;
+        }
+        
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    // Slideshow Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        
+        function showNextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        
+        // Change slide every 5 seconds
+        setInterval(showNextSlide, 5000);
+        
+        // Initialize first slide
+        slides[0].classList.add('active');
+    });
+</script>
+
+    <div class="products-grid">
+        <!-- Product 1 -->
+        <div class="product-card">
+            <div class="discount-badge">-30%</div>
+            <img src="belt.2.jpg" alt="SPJ 4 Litres, Hot Air Fryer" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Original Belts</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 20,000</span>
+                    <span class="original-price">UGX 28,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (62)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 2 -->
+        <div class="product-card">
+            <div class="discount-badge">-11%</div>
+            <img src="gangle.1.jpg" alt="Uganda Waragi Lemon" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Ear Rings and Bangles</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10000</span>
+                    <span class="original-price">UGX 15000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <i class="far fa-star"></i>
+                    (48)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 3 -->
+        <div class="product-card">
+            <div class="discount-badge">-33%</div>
+            <img src="cape.2.jpg" alt="Pixel 120 Liters Fridge" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Caps</h3>
+                <div class="product-price">
+                    <span class="current-price">Ugx.20,000</span>
+                    <span class="original-price">Ugx.30,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (87)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 4 -->
+        <div class="product-card">
+            <div class="discount-badge">-57%</div>
+            <img src="watches.2.jpg" alt="Apple iPad 3" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Hand watches</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 25,000</span>
+                    <span class="original-price">UGX 30,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (35)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 5 -->
+        <div class="product-card">
+            <div class="discount-badge">-47%</div>
+            <img src="anklet.3.jpg" alt="FOVER POWER KEY" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Anklets</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10,000</span>
+                    <span class="original-price">UGX 15,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (62)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 6 -->
+        <div class="product-card">
+            <div class="discount-badge">-52%</div>
+            <img src="bracelet.5.jpg" alt="Vision Plus TV" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Bracelets</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 50,000</span>
+                    <span class="original-price">UGX 60,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (124)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+         <!-- Product 4 -->
+         <div class="product-card">
+            <div class="discount-badge">-57%</div>
+            <img src="perfume.1.jpg" alt="Apple iPad 3" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Perfumes</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 25,000</span>
+                    <span class="original-price">UGX 30,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (35)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 5 -->
+        <div class="product-card">
+            <div class="discount-badge">-47%</div>
+            <img src="glasses.2.jpg" alt="FOVER POWER KEY" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Glasses</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10,000</span>
+                    <span class="original-price">UGX 15,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (62)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 6 -->
+        <div class="product-card">
+            <div class="discount-badge">-52%</div>
+            <img src="earring.11.jpg" alt="Vision Plus TV" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Ear rings</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10,000</span>
+                    <span class="original-price">UGX 15,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (124)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+            
+        </div>
+        <div class="product-card">
+            <div class="discount-badge">-57%</div>
+            <img src="belt.3.jpg" alt="Apple iPad 3" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Belt</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 25,000</span>
+                    <span class="original-price">UGX 30,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (35)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 5 -->
+        <div class="product-card">
+            <div class="discount-badge">-47%</div>
+            <img src="bangles.2.jpg" alt="FOVER POWER KEY" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Anklets</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 10,000</span>
+                    <span class="original-price">UGX 15,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    (62)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </div>
+        
+        <!-- Product 6 -->
+        <div class="product-card">
+            <div class="discount-badge">-52%</div>
+            <img src="pexels-kinkate-208052.jpg" alt="Vision Plus TV" class="product-image">
+            <div class="product-info">
+                <h3 class="product-title">Makeup</h3>
+                <div class="product-price">
+                    <span class="current-price">UGX 50,000</span>
+                    <span class="original-price">UGX 60,000</span>
+                </div>
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    (124)
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <h3>Menu</h3>
+            <button class="mobile-menu-close" id="menuClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="mobile-menu-section">
+            <h3>My Account</h3>
+            <a href="account.html" class="mobile-menu-item">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Login/Sign Up</span>
+            </a>
+            <a href="order.html" class="mobile-menu-item">
+                <i class="fas fa-box-open"></i>
+                <span>My Orders</span>
+            </a>
+            <a href="reviews.html" class="mobile-menu-item">
+                <i class="fas fa-star"></i>
+                <span>Pending Reviews</span>
+            </a>
+            <a href="wishlist.html" class="mobile-menu-item">
+                <i class="fas fa-heart"></i>
+                <span>Wishlist</span>
+            </a>
+        </div>
+        
+        <div class="mobile-menu-section">
+            <h3>Help Center</h3>
+            <a href="order.html" class="mobile-menu-item">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Place an Order</span>
+            </a>
+            <a href="payment.html" class="mobile-menu-item">
+                <i class="fas fa-credit-card"></i>
+                <span>Payments Options</span>
+            </a>
+            <a href="deliveryTracking.html" class="mobile-menu-item">
+                <i class="fas fa-truck"></i>
+                <span>Delivery Tracking</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Returns and Refunds</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Warranty</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-comments"></i>
+                <span>Live Help</span>
+            </a>
+        </div>
+        
+        <div class="mobile-menu-section">
+            <h3>Categories</h3>
+            <a href="product.html" class="mobile-menu-item">
+                <i class="fas fa-shopping-basket"></i>
+                <span>Earings</span>
+            </a>
+            <a href="product.html" class="mobile-menu-item">
+                <i class="fas fa-mobile-alt"></i>
+                <span>Caps</span>
+            </a>
+            <a href="product.html" class="mobile-menu-item">
+                <i class="fas fa-spa"></i>
+                <span>Belts</span>
+            </a>
+            <a href="product.html" class="mobile-menu-item">
+                <i class="fas fa-tshirt"></i>
+                <span>Fashion</span>
+            </a>
+            <a href="product.html" class="mobile-menu-item">
+                <i class="fas fa-laptop"></i>
+                <span>Watches</span>
+            </a>
+            <a href="product.html" class="mobile-menu-item">
+                <i class="fas fa-running"></i>
+                <span>Jewelries</span>
+            </a>
+            <a href="index.html" class="mobile-menu-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-gamepad"></i>
+                <span></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Order Hours</h3>
+                            <p>Weekdays: 8am - 9pm</p>
+                            <p>Weekends & Holidays: 8am - 8pm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>FLEXI FUSHION ACCESSORIES®</h3>
+                <p>Your one-stop online shop for all your needs. Quality products at affordable prices.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>NEW TO FLEXI FUSHION ACCESSORIES?</h3>
+                <p>Subscribe to our newsletter to get updates on our latest offers!</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter E-mail Address" required>
+                    <button type="submit">Subscribe</button>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="privacy-policy" required>
+                        <label for="privacy-policy">I agree to FLEXI FUSHION ACCESSORIES's Privacy and Cookie Policy. You can unsubscribe from newsletters at any time.</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="legal-terms" required>
+                        <label for="legal-terms">Accept the Legal Terms</label>
+                    </div>
+                </form>
+            </div>
+
+            <div class="footer-section">
+                <h3>DOWNLOAD Flexifas FREE APP</h3>
+                <p>Get access to exclusive offers!</p>
+                <div class="app-download">
+                    <a href="#" class="app-badge">
+                        <img src="https://via.placeholder.com/40" alt="Flexifas App Icon">
+                        <div class="app-info">
+                            <h4>Flexifas®</h4>
+                            <p>2.0m/s</p>
+                        </div>
+                        <div>App Store</div>
+                    </a>
+                    <a href="#" class="app-badge">
+                        <img src="https://via.placeholder.com/40" alt="Flexifas App Icon">
+                        <div class="app-info">
+                            <h4>FLEXI FUSHION ACCESSORIES®</h4>
+                            <p>GETTING</p>
+                        </div>
+                        <div>Google Play</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>CONTACT INFO</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Wandegeya, Bombo Road Opposite AR Hospital,<br>P.O.BOX 7002 Kampala(U)</p>
+                <p><i class="fas fa-phone"></i> +25677687754 /+256740327211 / +256774891809</p>
+                <p><i class="fas fa-envelope"></i> Flexifas@gmail.com</p>
+                <p><i class="fas fa-clock"></i> Mon-Sun: 8:00 AM - 8:00 PM</p>
+                <p><i class="date ">12th september,2024</i></p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 FLEXI FUSHION ACCESSORIES®. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuClose = document.getElementById('menuClose');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.add('show');
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        });
+
+        menuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('show');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        });
+
+        overlay.addEventListener('click', () => {
+            mobileMenu.classList.remove('show');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        });
+
+        // Search functionality
+        const searchBar = document.querySelector('.search-bar');
+        searchBar.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const searchTerm = searchBar.querySelector('input').value;
+            alert(`Searching for: ${searchTerm}`);
+        });
+
+        // Help dropdown functionality
+        const helpBtn = document.getElementById('helpBtn');
+        const helpDropdown = document.getElementById('helpDropdownContent');
+
+        helpBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            helpDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.help-dropdown')) {
+                helpDropdown.classList.remove('show');
+            }
+        });
+
+        // Simple animation trigger on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactItems = document.querySelectorAll('.contact-item');
+            
+            contactItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = `all 0.5s ease ${index * 0.1}s`;
+                
+                // Trigger reflow to enable animation
+                void item.offsetWidth;
+                
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            });
+
+            // Make phone numbers clickable on mobile
+            if ('ontouchstart' in window) {
+                document.querySelectorAll('.contact-link').forEach(link => {
+                    link.style.cursor = 'pointer';
+                });
+            }
+
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    alert(`Thank you for subscribing with ${email}! You'll receive our latest offers soon.`);
+                    this.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
